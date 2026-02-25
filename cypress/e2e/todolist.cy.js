@@ -1,6 +1,6 @@
 describe('TodoList Component Tests', () => {
   beforeEach(() => {
-    cy.visit('../../src/index.html', { baseUrl: null });
+    cy.visit('http://localhost:8080/src/index.html');
   });
 
   // Test: Ajouter quatre todos puis supprimer la deuxième et vérifier qu'il ne reste que 3 todos

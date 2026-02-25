@@ -1,6 +1,6 @@
 describe('Scroll to Top Component Tests', () => {
   beforeEach(() => {
-    cy.visit('../../src/scroll-to-top.html', { baseUrl: null });
+    cy.visit('http://localhost:8080/src/scroll-to-top.html');
   });
 
   // Test 1
