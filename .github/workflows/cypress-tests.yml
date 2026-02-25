@@ -22,5 +22,15 @@ jobs:
           BRANCH="${{ github.ref }}"
           COMMIT="${{ github.sha }}"
           PAYLOAD="{\"content\":\"Build status: ${STATUS}\nRepository: ${REPO}\nBranch: ${BRANCH}\nCommit: ${COMMIT}\nRun: ${RUN_URL}\"}"
+          echo "--- Discord notify debug ---"
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "DISCORD_WEBHOOK secret is NOT set. No notification will be sent."
+            echo "Set the secret in Settings → Secrets → Actions with your webhook URL and re-run the workflow."
+            exit 0
+          fi
+          echo "Payload: $PAYLOAD"
           echo "Sending notification to Discord..."
-          curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK"
+          HTTP_RESPONSE=$(curl -s -o /tmp/discord_resp -w "%{http_code}" -H "Content-Type: application/json" -d "$PAYLOAD" "$DISCORD_WEBHOOK" || true)
+          echo "HTTP status: $HTTP_RESPONSE"
+          echo "Discord response body:" && cat /tmp/discord_resp || true
+          echo "--- end debug ---"
