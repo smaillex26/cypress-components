@@ -23,8 +23,8 @@ describe('Smart Tag Component Tests', () => {
     // Vérifier que le tag est visible
     cy.get('[x-show="isActive"]').should('be.visible');
     
-    // Quitter le survol du bouton
-    cy.contains('div', 'See more').trigger('mouseout');
+    // Cliquer ailleurs pour déclencher mouseover.away
+    cy.get('body').click(0, 0);
     
     // Vérifier que le tag est maintenant caché
     cy.get('[x-show="isActive"]').should('not.be.visible');
