@@ -1,53 +1,38 @@
 name: Cypress Tests CI/CD
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+on: push
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        node-version: [18.x]
-
+    runs-on: ubuntu-24.04
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run Cypress tests
-      run: npm run test:ci
-
-    - name: Generate test report
-      if: always()
-      run: |
-        echo "## Cypress Test Report" >> $GITHUB_STEP_SUMMARY
-        echo "Tests executed on: $(date)" >> $GITHUB_STEP_SUMMARY
-        echo "✅ Build passed" >> $GITHUB_STEP_SUMMARY
-
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress-reports
-        path: cypress/videos/
-        retention-days: 7
-
-    - name: Upload screenshots
-      if: failure()
-      uses: actions/upload-artifact@v4
-      with:
-        name: cypress-screenshots
-        path: cypress/screenshots/
-        retention-days: 7
+      - name: Checkout
+        uses: actions/checkout@v6
+      
+      - name: Cypress run
+        uses: cypress-io/github-action@v7
+        with:
+          spec: cypress/e2e/**/*.cy.js
+      
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "## Cypress Test Report" >> $GITHUB_STEP_SUMMARY
+          echo "Tests executed on: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Build passed" >> $GITHUB_STEP_SUMMARY
+      
+      - name: Upload test videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress/videos/
+          retention-days: 7
+      
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots/
+          retention-days: 7
