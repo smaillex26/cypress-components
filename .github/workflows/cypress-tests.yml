@@ -1,4 +1,4 @@
-name: Cypress Tests CI/CD
+name: cypress-testing
 
 on: push
 
@@ -8,31 +8,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v7
-        with:
-          browser: chromium
-      
-      - name: Generate test report
-        if: always()
-        run: |
-          echo "## Cypress Test Report" >> $GITHUB_STEP_SUMMARY
-          echo "Tests executed on: $(date)" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Build passed" >> $GITHUB_STEP_SUMMARY
-      
-      - name: Upload test videos
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-videos
-          path: cypress/videos/
-          retention-days: 7
-      
-      - name: Upload screenshots on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots/
-          retention-days: 7
