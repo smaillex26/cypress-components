@@ -12,7 +12,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v7
         with:
-          spec: cypress/e2e/**/*.cy.js
+          browser: chromium
       
       - name: Generate test report
         if: always()
