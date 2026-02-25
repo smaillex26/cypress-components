@@ -1,6 +1,6 @@
 describe('Modal Component Tests', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8080/src/modal.html');
+    cy.visit('../../src/modal.html');
   });
 
   // Test 1

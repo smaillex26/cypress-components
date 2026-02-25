@@ -1,6 +1,6 @@
 describe('Smart Tag Component Tests', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:8080/src/smart-tag.html');
+    cy.visit('../../src/smart-tag.html');
   });
 
   // Test 1: Tester l'apparition du tag au survol du bouton "See more"
